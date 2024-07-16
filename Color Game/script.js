@@ -3,17 +3,18 @@ const COLORS = ["Red", "Orange", "White", "Black", "Green", "Blue", "Brown", "Pu
 let score = 0;
 let displayedWordColor = "";
 let gameRunning = false;
+let timerInterval;
 
 function printScore() {
-  document.getElementById("game-score").textContent = "Your Score: " + score;
+  document.getElementById("game-score").textContent = `Your Score: ${score}`;
 }
 
 function printTimeLeft(secondsLeft) {
-  document.getElementById("time-left").textContent = "Game Ends in: " + secondsLeft + "s";
+  document.getElementById("time-left").textContent = `Game Ends in: ${secondsLeft}s`;
 }
 
 function printGameDescription() {
-  document.getElementById("game-description").textContent = "Game Description: Enter the color of the words displayed below. And keep in mind not to enter the word text itself";
+  document.getElementById("game-description").textContent = "Game Description: Enter the color of the words displayed below. Do not enter the word text itself.";
 }
 
 function startGame() {
@@ -39,8 +40,9 @@ function stopGame() {
 
 function nextWord() {
   if (gameRunning) {
-    const displayedWordText = COLORS[Math.floor(Math.random() * COLORS.length)];
-    displayedWordColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const randomIndex = Math.floor(Math.random() * COLORS.length);
+    displayedWordColor = COLORS[randomIndex];
+    const displayedWordText = COLORS[randomIndex];
     document.getElementById("displayed-words").textContent = displayedWordText;
     document.getElementById("displayed-words").style.color = displayedWordColor;
   }
