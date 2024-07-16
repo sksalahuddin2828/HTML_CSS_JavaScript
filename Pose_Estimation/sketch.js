@@ -1,12 +1,9 @@
 let video;
 let poseNet;
-let noseX = 0;
-let noseY = 0;
-let eyelX = 0;
-let eyelY = 0;
-let eyerX = 0;
-let eyerY = 0;
- 
+let noseX = 0, noseY = 0;
+let eyelX = 0, eyelY = 0;
+let eyerX = 0, eyerY = 0;
+
 function setup() {
   createCanvas(640, 480);
   video = createCapture(VIDEO);
@@ -16,7 +13,6 @@ function setup() {
 }
 
 function gotPoses(poses) {
-  // console.log(poses);
   if (poses.length > 0) {
     let nX = poses[0].pose.keypoints[0].position.x;
     let nY = poses[0].pose.keypoints[0].position.y;
@@ -34,16 +30,19 @@ function gotPoses(poses) {
 }
 
 function modelReady() {
-  console.log('model ready');
+  console.log('Model is ready');
 }
 
 function draw() {
   image(video, 0, 0);
   let d = dist(noseX, noseY, eyelX, eyelY);
+  
+  // Draw nose and eyes
+  noStroke();
   fill(255, 0, 0);
-  ellipse(noseX, noseY, d/3);
-  fill(0,0,255);
-  ellipse(eyelX, eyelY, d/3);
-  fill(0,0,255);
-  ellipse(eyerX, eyerY, d/3);
+  ellipse(noseX, noseY, d / 3);
+  
+  fill(0, 0, 255);
+  ellipse(eyelX, eyelY, d / 3);
+  ellipse(eyerX, eyerY, d / 3);
 }
