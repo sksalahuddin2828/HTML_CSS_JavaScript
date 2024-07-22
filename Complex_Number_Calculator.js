@@ -1,92 +1,99 @@
 class Complex {
-  constructor() {
-    this.real = 0.0;
-    this.imag = 0.0;
+  constructor(real = 0.0, imag = 0.0) {
+    this.real = real;
+    this.imag = imag;
   }
 
-  set_data() {
-    this.real = parseFloat(prompt("Enter the real value of the complex number: "));
-    this.imag = parseFloat(prompt("Enter the imaginary value of the complex number: "));
+  static promptForComplex() {
+    const real = parseFloat(prompt("Enter the real value of the complex number: "));
+    const imag = parseFloat(prompt("Enter the imaginary value of the complex number: "));
+    return new Complex(real, imag);
   }
 
-  add(a, b, c, d) {
-    this.real = a + c;
-    this.imag = b + d;
+  add(other) {
+    return new Complex(this.real + other.real, this.imag + other.imag);
   }
 
-  subtract(a, b, c, d) {
-    this.real = a - c;
-    this.imag = b - d;
+  subtract(other) {
+    return new Complex(this.real - other.real, this.imag - other.imag);
   }
 
-  multiply(a, b, c, d) {
-    this.real = a * c - b * d;
-    this.imag = a * d + b * c;
+  multiply(other) {
+    return new Complex(
+      this.real * other.real - this.imag * other.imag,
+      this.real * other.imag + this.imag * other.real
+    );
   }
 
-  divide(a, b, c, d) {
-    this.real = (a * c + b * d) / (c * c + d * d);
-    this.imag = (b * c - a * d) / (c * c + d * d);
-  }
-
-  get_data() {
-    if (this.imag >= 0) {
-      console.log(`${this.real}+${this.imag}i`);
-    } else {
-      console.log(`${this.real}${this.imag}i`);
+  divide(other) {
+    const denominator = other.real * other.real + other.imag * other.imag;
+    if (denominator === 0) {
+      throw new Error("Cannot divide by zero");
     }
+    return new Complex(
+      (this.real * other.real + this.imag * other.imag) / denominator,
+      (this.imag * other.real - this.real * other.imag) / denominator
+    );
+  }
+
+  toString() {
+    return `${this.real}${this.imag >= 0 ? '+' : ''}${this.imag}i`;
+  }
+
+  print() {
+    console.log(this.toString());
   }
 }
 
-const x1 = new Complex();
-const x2 = new Complex();
-const addition = new Complex();
-const subtraction = new Complex();
-const multiplication = new Complex();
-const division = new Complex();
+function main() {
+  const x1 = Complex.promptForComplex();
+  const x2 = Complex.promptForComplex();
 
-x1.set_data();
-x2.set_data();
+  console.log("Complex number 1 is:");
+  x1.print();
+  console.log("Complex number 2 is:");
+  x2.print();
 
-console.log("Complex number 1 is:");
-x1.get_data();
-console.log("Complex number 2 is:");
-x2.get_data();
+  let ans = 1;
+  while (ans === 1) {
+    console.log("Choose the operation to perform:");
+    console.log("1. Addition\n2. Subtraction\n3. Multiplication\n4. Division");
+    const choice = parseInt(prompt());
 
-let ans = 1;
-while (ans === 1) {
-  console.log("Choose the operation to perform:");
-  console.log("1. Addition\n2. Subtraction\n3. Multiplication\n4. Division");
-  const a = parseInt(prompt());
-
-  if (a === 1) {
-    addition.add(x1.real, x1.imag, x2.real, x2.imag);
-    console.log("Addition of Complex 1 and Complex 2 is:");
-    addition.get_data();
-  } else if (a === 2) {
-    subtraction.subtract(x1.real, x1.imag, x2.real, x2.imag);
-    console.log("Subtraction of Complex 2 from Complex 1 is:");
-    subtraction.get_data();
-  } else if (a === 3) {
-    multiplication.multiply(x1.real, x1.imag, x2.real, x2.imag);
-    console.log("Multiplication of Complex 1 and Complex 2 is:");
-    multiplication.get_data();
-  } else if (a === 4) {
-    if (x2.real === 0 && x2.imag === 0) {
-      console.log("Can't divide by zero");
-    } else {
-      division.divide(x1.real, x1.imag, x2.real, x2.imag);
-      console.log("On division of Complex 1 by Complex 2, we get:");
-      division.get_data();
+    try {
+      switch (choice) {
+        case 1:
+          const addition = x1.add(x2);
+          console.log("Addition of Complex 1 and Complex 2 is:");
+          addition.print();
+          break;
+        case 2:
+          const subtraction = x1.subtract(x2);
+          console.log("Subtraction of Complex 2 from Complex 1 is:");
+          subtraction.print();
+          break;
+        case 3:
+          const multiplication = x1.multiply(x2);
+          console.log("Multiplication of Complex 1 and Complex 2 is:");
+          multiplication.print();
+          break;
+        case 4:
+          const division = x1.divide(x2);
+          console.log("On division of Complex 1 by Complex 2, we get:");
+          division.print();
+          break;
+        default:
+          console.log("Invalid option chosen!");
+      }
+    } catch (error) {
+      console.log(error.message);
     }
-  } else {
-    console.log("Invalid option chosen!");
+
+    ans = parseInt(prompt("Do you want to check more? (1 for yes / 2 for no): "));
   }
 
-  ans = parseInt(prompt("Do you want to check more? (1 for yes / 2 for no): "));
-  if (ans === 2) {
-    break;
-  }
+  console.log("\nThank you");
 }
 
-console.log("\nThank you");
+main();
+
