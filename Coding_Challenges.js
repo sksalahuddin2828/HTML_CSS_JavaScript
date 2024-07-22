@@ -13,75 +13,83 @@
 //----------------------------------------------------------------Solution of Problem:----------------------------------------------------------
 
 // 1. Converting Decimal Numbers to Octal Numbers:
+function convertDecimalToOctal(decimal_number) {
+    let octal_number = [];
 
-let decimal_number = 25;
-let octal_number = [];
+    while (decimal_number > 0) {
+        octal_number.push(decimal_number % 8);
+        decimal_number = Math.floor(decimal_number / 8);
+    }
 
-while (decimal_number > 0) {
-    octal_number.push(decimal_number % 8);
-    decimal_number = Math.floor(decimal_number / 8);
+    return octal_number.reverse().join('');
 }
 
-process.stdout.write("Octal number: ");
-
-for (let i = octal_number.length - 1; i >= 0; i--) {
-    process.stdout.write(octal_number[i].toString());
-}
+const decimalNumber = 25;
+const octalNumber = convertDecimalToOctal(decimalNumber);
+console.log(`Octal number: ${octalNumber}`);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
 // 2. Reversing an Integer:
+function reverseInteger(number) {
+    let reversed_number = 0;
 
-let number = 12345;
-let reversed_number = 0;
+    while (number !== 0) {
+        reversed_number = reversed_number * 10 + number % 10;
+        number = Math.floor(number / 10);
+    }
 
-while (number !== 0) {
-    reversed_number = reversed_number * 10 + number % 10;
-    number = Math.floor(number / 10);
+    return reversed_number;
 }
 
-console.log(reversed_number);
+const numberToReverse = 12345;
+const reversedNumber = reverseInteger(numberToReverse);
+console.log(`Reversed number: ${reversedNumber}`);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
 // 3. Printing the Fibonacci Series using Recursion:
-
 function fibonacci(n) {
     if (n <= 1) {
         return n;
-    } else {
-        return fibonacci(n - 1) + fibonacci(n - 2);
     }
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-let n = 10;
-process.stdout.write("Fibonacci series: ");
-
-for (let i = 0; i < n; i++) {
-    process.stdout.write(fibonacci(i) + " ");
+function printFibonacciSeries(length) {
+    let series = [];
+    for (let i = 0; i < length; i++) {
+        series.push(fibonacci(i));
+    }
+    return series.join(' ');
 }
+
+const fibonacciLength = 10;
+const fibonacciSeries = printFibonacciSeries(fibonacciLength);
+console.log(`Fibonacci series: ${fibonacciSeries}`);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
 // 4. Returning the Nth Value from the Fibonacci Sequence:
-
 function fibonacci(n) {
     if (n <= 1) {
         return n;
-    } else {
-        return fibonacci(n - 1) + fibonacci(n - 2);
     }
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-let n = 10;
-let fibonacci_number = fibonacci(n);
-console.log(fibonacci_number);
+const nthFibonacci = 10;
+const nthFibonacciNumber = fibonacci(nthFibonacci);
+console.log(`The ${nthFibonacci}th Fibonacci number is: ${nthFibonacciNumber}`);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
 // 5. Finding the Average of Numbers:
+function calculateAverage(numbers) {
+    let sum = numbers.reduce((acc, curr) => acc + curr, 0);
+    return sum / numbers.length;
+}
 
-let numbers = [10, 20, 30, 40, 50];
-let sum = numbers.reduce((acc, curr) => acc + curr, 0);
-let average = sum / numbers.length;
-console.log("Average: " + average);
+const numbersArray = [10, 20, 30, 40, 50];
+const average = calculateAverage(numbersArray);
+console.log(`Average: ${average}`);
