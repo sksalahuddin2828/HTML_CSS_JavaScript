@@ -5,32 +5,48 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question("Enter your height in centimeters: ", (height) => {
-  rl.question("Enter your weight in Kg: ", (weight) => {
-    height = parseFloat(height);
-    weight = parseFloat(weight);
+function calculateBMI(height, weight) {
+  const heightInMeters = height / 100;
+  return weight / (heightInMeters * heightInMeters);
+}
 
-    height = height / 100;
-    const bmi = weight / (height * height);
+function getBMICategory(bmi) {
+  if (bmi <= 16) {
+    return "You are severely under-weight.";
+  } else if (bmi <= 18.5) {
+    return "You are under-weight.";
+  } else if (bmi <= 25) {
+    return "You are healthy.";
+  } else if (bmi <= 30) {
+    return "You are overweight.";
+  } else {
+    return "You are severely overweight.";
+  }
+}
 
-    console.log(`Your Body-Mass index is: ${bmi.toFixed(2)}`);
-
-    if (bmi > 0) {
-      if (bmi <= 16) {
-        console.log("You are severely under-weight.");
-      } else if (bmi <= 18.5) {
-        console.log("You are under-weight.");
-      } else if (bmi <= 25) {
-        console.log("You are Healthy.");
-      } else if (bmi <= 30) {
-        console.log("You are overweight.");
-      } else {
-        console.log("You are severely overweight.");
-      }
-    } else {
-      console.log("Please enter valid details.");
-    }
-
-    rl.close();
+function promptUser(question) {
+  return new Promise((resolve) => {
+    rl.question(question, resolve);
   });
-});
+}
+
+async function main() {
+  try {
+    const height = parseFloat(await promptUser("Enter your height in centimeters: "));
+    const weight = parseFloat(await promptUser("Enter your weight in Kg: "));
+
+    if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+      console.log("Please enter valid details.");
+    } else {
+      const bmi = calculateBMI(height, weight);
+      console.log(`Your Body-Mass index is: ${bmi.toFixed(2)}`);
+      console.log(getBMICategory(bmi));
+    }
+  } catch (error) {
+    console.log("An error occurred: ", error.message);
+  } finally {
+    rl.close();
+  }
+}
+
+main();
